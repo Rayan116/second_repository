@@ -20,14 +20,14 @@ import java.util.Objects;
 @NoArgsConstructor
 @Data
 @Entity
-@Table(name = "patients")
+@Table(name = "patients", schema = "public")
 public class Patient implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(length = 70)
+    @Column(length = 70, name = "first_name")
     private String firstName;
-    @Column(length = 100)
+    @Column(length = 100, name = "last_name")
     private String lastName;
     @Enumerated(EnumType.STRING)
     private PatientGender gender;
@@ -37,17 +37,20 @@ public class Patient implements Serializable {
     private PatientState state;
     @Column(nullable = false, unique = true)
     private String phone;
-    @Column(unique = true, length = 150, nullable = false)
+    @Column(unique = true, length = 200, nullable = false)
     private String email;
+    @Column(nullable = false)
     private String address;
     private LocalDate birthday;
     @Transient
     private int age;
+    @Column(name = "created_date")
     private LocalDateTime createdDate;
+    @Column(name = "update_date")
     private LocalDateTime updateDate;
-    @ManyToMany
-    @JoinTable(name = "patient_disease_assn",
-            joinColumns = @JoinColumn(name = "patient_id", referencedColumnName = "id"),
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "patients_disease",
+            joinColumns = @JoinColumn(name = "patients_id", referencedColumnName = "id"),
             inverseJoinColumns = @JoinColumn(name = "disease_id", referencedColumnName = "id"))
     private List<Disease> disease;
 

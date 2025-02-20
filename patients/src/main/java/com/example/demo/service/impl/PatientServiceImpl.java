@@ -1,8 +1,8 @@
-package com.example.demo.service;
+package com.example.demo.service.impl;
 
 import com.example.demo.dto.UserPatientDto;
-import com.example.demo.model.Patient;
 import com.example.demo.repository.PatientRepository;
+import com.example.demo.service.PatientService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 

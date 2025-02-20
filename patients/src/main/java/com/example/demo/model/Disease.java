@@ -2,7 +2,6 @@ package com.example.demo.model;
 
 
 import com.example.demo.model.enums.DiseaseState;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -17,7 +16,7 @@ import java.util.List;
 @Setter
 @ToString
 @Entity
-@Table(name = "disease")
+@Table(name = "disease", schema = "public")
 public class Disease implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,11 +26,9 @@ public class Disease implements Serializable {
     private LocalDateTime start;
     @Enumerated(EnumType.STRING)
     private DiseaseState state;
-    @OneToMany (cascade={CascadeType.ALL},mappedBy = "disease")
-    @JsonManagedReference
-    @ToString.Exclude
-    private List<File> files;
-    @ManyToMany(mappedBy = "diseases")
-    @ToString.Exclude
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "patients_disease",
+            joinColumns = @JoinColumn(name = "disease_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "patients_id", referencedColumnName = "id"))
     private List<Patient> patients;
 }
